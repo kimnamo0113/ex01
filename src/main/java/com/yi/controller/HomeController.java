@@ -31,4 +31,8 @@ public class HomeController {
 	public String map() {
 		return "SouthKoreaDrillDown";
 	}
+	@RequestMapping(value = "/scroll", method = RequestMethod.GET)
+	public String scroll() {
+		return "infiniteScroll";
+	}
 }
