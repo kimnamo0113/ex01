@@ -27,13 +27,15 @@
 							<c:forEach var="board" items="${list}">
 								<tr>
 									<td>${board.bno }</td>
-									<td>${board.title }</td>
+									<td><a href="r
+									ead?bno=${board.bno }">${board.title }</a></td>
 									<td>${board.writer }</td>
 									<td><fmt:formatDate value="${board.regdate }" pattern="yyyy-MM-dd HH:mm"/></td>
 									<td><span class="badge bg-red">${board.viewcnt }</span></td>
 								</tr>
 							</c:forEach>
 						</table>
+						<button type="button" class="btn"><a href="register">글쓰기</a></button>
 					</div>
 					<!-- box-footer -->
 					<div class="box-footer">

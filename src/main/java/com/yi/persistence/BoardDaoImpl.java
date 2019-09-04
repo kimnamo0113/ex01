@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import com.yi.domain.Board;
+import com.yi.domain.Creiteria;
+import com.yi.domain.SearchCriteria;
 
 @Repository
 public class BoardDaoImpl implements BoardDao{
@@ -29,6 +31,47 @@ public class BoardDaoImpl implements BoardDao{
 	@Override
 	public List<Board> listAll() throws Exception {
 		return sqlSession.selectList(namespace+".listAll");
+	}
+
+	@Override
+	public void delete(int bno) throws Exception {
+		sqlSession.delete(namespace+".delete",bno);
+	}
+
+	@Override
+	public void update(Board board) throws Exception {
+		sqlSession.update(namespace+".update",board);
+	}
+
+	@Override
+	public void viewCnt(Board board) throws Exception {
+		sqlSession.update(namespace+".viewCnt",board);
+	}
+
+	@Override
+	public List<Board> listPage(int page) throws Exception {
+		page=(page-1)*10;
+		return sqlSession.selectList(namespace+".listPage",page);
+	}
+
+	@Override
+	public List<Board> listCreteria(Creiteria cri) throws Exception {
+		return sqlSession.selectList(namespace+".listCreteria",cri);
+	}
+
+	@Override
+	public int countPaging() throws Exception {
+		return sqlSession.selectOne(namespace+".countPaging");
+	}
+
+	@Override
+	public List<Board> listSearch(SearchCriteria cri) throws Exception {
+		return sqlSession.selectList(namespace+".listSearch",cri);
+	}
+
+	@Override
+	public int listSearchCount(SearchCriteria cri) throws Exception {
+		return sqlSession.selectOne(namespace+".listSearchCount",cri);
 	}
 	
 }
