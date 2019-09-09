@@ -2,93 +2,35 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yi.mapper.BoardMapper">
+<mapper namespace="com.yi.mapper.ReplyMapper">
 
-	<insert id="create" parameterType="Board">
-		insert into tbl_board(title,content,writer)
-		values
-		(#{title},#{content},#{writer})
+	<select id="list" resultType="ReplyVO">
+		select * from tbl_reply where bno = #{bno}
+		order by rno desc
+	</select>
+	
+	<insert id="create">
+		insert into tbl_reply (bno,replytext,replyer)
+		value (#{bno},#{replytext},#{replyer}) 
 	</insert>
-	<select id="read" resultType="Board">
-		select * from tbl_board where bno=#{bno}
-	</select>
 	
-	<update id="viewCnt" parameterType="Board">
-		UPDATE book_ex.tbl_board
-		SET viewcnt=#{viewcnt}
-		WHERE bno=#{bno};
+	<update id="update">
+		update tbl_reply set replytext = #{replytext}, updatedate = now()
+		where rno = #{rno}	
 	</update>
-	
-	
-	<select id="listAll" resultType="Board">
-		select * from tbl_board
-	</select>
-	
-	<select id="listPage" resultType="Board">
-		select * from tbl_board
-		order by bno desc
-		limit #{Page}, 10
-	</select>
-	
-	<select id="listCreteria" resultType="Board" parameterType="Creiteria">
-		select * from tbl_board
-		order by bno desc
-		limit #{pageStart}, #{perPageNum}
-	</select>
-	
-	<sql id="search">
-		<if test="searchType=='t'.toString()">
-			where title like CONCAT('%',#{keyword},'%')
-		</if>
-		<if test="searchType=='c'.toString()">
-			where content like CONCAT('%',#{keyword},'%')
-		</if>
-		<if test="searchType=='w'.toString()">
-			where writer like CONCAT('%',#{keyword},'%')
-		</if>
-		<if test="searchType=='tc'.toString()">
-			where title like CONCAT('%',#{keyword},'%') OR content like CONCAT('%',#{keyword},'%')
-		</if>
-		<if test="searchType=='cw'.toString()">
-			where content like CONCAT('%',#{keyword},'%') OR writer like CONCAT('%',#{keyword},'%')
-		</if>
-		<if test="searchType=='tc'.toString()">
-			where title like CONCAT('%',#{keyword},'%') OR content like CONCAT('%',#{keyword},'%')
-		</if>
-		<if test="searchType=='tcw'.toString()">
-			where title like CONCAT('%',#{keyword},'%') OR content like CONCAT('%',#{keyword},'%') OR writer like CONCAT('%',#{keyword},'%') 
-		</if>
-	</sql>
-	
-	<select id="listSearch" resultType="Board" parameterType="Creiteria">
-		select * from tbl_board
-		<include refid="search"></include>
-		order by bno desc
-		limit #{pageStart}, #{perPageNum}
-	</select>
-	
 	
 	<delete id="delete">
-		DELETE FROM book_ex.tbl_board
-		WHERE bno=#{bno};
+		delete from tbl_reply where rno = #{rno}
 	</delete>
 	
-	<update id="update" parameterType="Board">
-		UPDATE book_ex.tbl_board
-		SET title=#{title}, content=#{content}, regdate=now()
-		WHERE bno=#{bno};
-	</update>
-	
-	<select id="countPaging" resultType="int">
-		select count(bno) from tbl_board
-	</select>
-	
-	<select id="listSearchCount" resultType="int" parameterType="Creiteria">
-		select count(bno) from tbl_board
-		<include refid="search"></include>
+	<select id="listPage" resultType="ReplyVO">
+		select * from tbl_reply where bno = #{bno}
+		order by rno desc
+		limit #{cri.pageStart},#{cri.perPageNum}
 	</select>
 	
 	
-	
-	
+	<select id="totalCount" resultType="int">
+		select count(rno) from tbl_reply where bno = #{bno}
+	</select>
 </mapper>
