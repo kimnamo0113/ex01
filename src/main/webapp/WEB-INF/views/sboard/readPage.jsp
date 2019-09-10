@@ -82,10 +82,12 @@
 			<button type="button" class="btn btn-primary" id="btnReplyAdd">ADD REPLY</button>
 		</div>
 		
+		
+		
 	</div>
 	<ul class="timeline">
 		<li class="time-label" id="btnReplyList">
-			<span class="bg-green">Replies List</span>
+			<span class="bg-green">Replies List : [<span id="replycnt">${board.replycnt }</span>]</span>
 		</li>
 	</ul>
 	<div class="text-center">
@@ -200,8 +202,12 @@
 					if(res=='success'){
 						alert("삭제되었습니다.");
 						getListAll(1);
+						var cnt=$("#replycnt").text();
+						$("#replycnt").text(Number(cnt)-1);
 					}
 				}
+			
+			
 				
 			})
 		})
@@ -228,6 +234,8 @@
 				success:function(res){
 					console.log(res);
 					getListAll(1);
+					var cnt=$("#replycnt").text();
+					$("#replycnt").text(Number(cnt)+1);
 				}
 				
 			})

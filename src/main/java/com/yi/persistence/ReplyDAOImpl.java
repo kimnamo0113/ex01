@@ -35,6 +35,7 @@ public class ReplyDAOImpl implements ReplyDAO{
 
 	@Override
 	public void delete(int rno) throws Exception {
+		
 		sqlSession.delete(namespace+".delete",rno);	
 	}
 
@@ -50,6 +51,11 @@ public class ReplyDAOImpl implements ReplyDAO{
 	@Override
 	public int totalCount(int bno) throws Exception {
 		return sqlSession.selectOne(namespace+".totalCount",bno);
+	}
+
+	@Override
+	public int getBno(int rno) throws Exception {
+		return sqlSession.selectOne(namespace+".getBno",rno);
 	}
 	
 }

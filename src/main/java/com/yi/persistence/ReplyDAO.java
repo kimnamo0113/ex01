@@ -13,4 +13,5 @@ public interface ReplyDAO {
 	
 	public List<ReplyVO> listPage(int bno,Creiteria cri) throws Exception;
 	public int totalCount(int bno) throws Exception;
+	public int getBno(int rno) throws Exception;
 }

@@ -90,6 +90,7 @@ public class ReplyContorller {
 		logger.info("delete-------------- rno:"+rno);
 		
 		try {
+			
 			service.delete(rno);
 			entity = new ResponseEntity<String>("success",HttpStatus.OK);
 		} catch (Exception e) {

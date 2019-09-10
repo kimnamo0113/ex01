@@ -9,6 +9,16 @@ public class Board {
 	private String writer;
 	private Date regdate;
 	private int viewcnt;
+	private int replycnt;
+	
+	
+	
+	public int getReplycnt() {
+		return replycnt;
+	}
+	public void setReplycnt(int replycnt) {
+		this.replycnt = replycnt;
+	}
 	public Board() {
 		super();
 		// TODO Auto-generated constructor stub
