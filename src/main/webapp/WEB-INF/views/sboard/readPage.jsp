@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <section class="content">
 
 
@@ -34,6 +35,11 @@
 							<label>Writer</label> <input type="text" name="writer"
 								value="${board.writer} " class="form-control"
 								placeholder="Enter Writer" disabled>
+						</div>
+						<div class="form-group">
+							<c:forEach var="file" items="${board.files }">
+								<img src="displayFile?filename=${file }">
+							</c:forEach>
 						</div>
 					</div>
 					<!-- box-footer -->

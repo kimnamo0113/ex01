@@ -83,5 +83,15 @@ public class BoardDaoImpl implements BoardDao{
 		map.put("bno", bno);
 		sqlSession.update(namespace+".updateReplyCnt",map);
 	}
+
+	@Override
+	public void addAttach(String fullName) throws Exception {
+		sqlSession.insert(namespace+".addAttach",fullName);
+	}
+
+	@Override
+	public List<String> getAttach(int bno) throws Exception {
+		return sqlSession.selectList(namespace+".getAttach",bno);
+	}
 	
 }

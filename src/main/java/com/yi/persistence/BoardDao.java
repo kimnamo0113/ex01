@@ -21,5 +21,7 @@ public interface BoardDao {
 	public List<Board> listSearch(SearchCriteria cri) throws Exception;
 	public int listSearchCount(SearchCriteria cri) throws Exception;
 	public void updateReplyCnt(int amount, int bno) throws Exception;
-	
+
+	public void addAttach(String fullName) throws Exception;
+	public List<String> getAttach(int bno) throws Exception;
 }

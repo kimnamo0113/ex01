@@ -92,5 +92,11 @@
 		update tbl_board set replycnt = replycnt+#{amount} where bno = #{bno}
 	</update>
 	
+	<insert id="addAttach">
+		insert into tbl_attach(fullName, bno) value(#{fullName}, LAST_INSERT_ID())
+	</insert>
 	
+	<select id="getAttach" resultType="String">
+		select fullName from tbl_attach where bno = #{bno}
+	</select>
 </mapper>

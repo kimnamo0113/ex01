@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yi.domain.Board;
 import com.yi.domain.Creiteria;
@@ -16,9 +17,13 @@ public class BoardServiceImpl implements BoardService{
 	@Autowired
 	BoardDao dao;
 
+	@Transactional
 	@Override
 	public void regist(Board board) throws Exception {
 		dao.create(board);
+		for(String fullName : board.getFiles()) {
+			dao.addAttach(fullName);
+		}
 	}
 
 	@Override
@@ -30,10 +35,14 @@ public class BoardServiceImpl implements BoardService{
 	public Board read(int bno,boolean viewCnt) throws Exception {
 
 		Board board = dao.read(bno);
+		List<String> files = dao.getAttach(bno);
+		board.setFiles(files);
+		
 		if(viewCnt==true) {
 			board.setViewcnt(board.getViewcnt()+1);
 			dao.viewCnt(board);
 		}
+		
 		return board;
 	}
 

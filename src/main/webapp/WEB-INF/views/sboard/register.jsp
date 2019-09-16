@@ -17,7 +17,7 @@
 							REGISTER BOARD
 						</h3>
 					</div>
-					<form action="register" method="post" role="form">
+					<form action="register" method="post" role="form" enctype="multipart/form-data">
 						<input type="hidden" name="page" value="${cri.page }">
 						<input type="hidden" name="searchType" value="${cri.searchType }">
 						<input type="hidden" name="keyword" value="${cri.keyword }">
@@ -34,6 +34,10 @@
 							<div class="form-group">
 								<label>Writer</label>
 								<input type="text" name="writer" class="form-control" placeholder="Enter Writer">
+							</div>
+							<div class="form-group">
+								<label>Files</label>
+								<input type="file" name="imgFiles" class="form-control" multiple="multiple">
 							</div>
 						</div>
 						<!-- box-footer -->
