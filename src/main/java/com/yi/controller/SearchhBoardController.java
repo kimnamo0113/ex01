@@ -1,5 +1,6 @@
 package com.yi.controller;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -111,10 +112,21 @@ public class SearchhBoardController {
 	@RequestMapping(value="removePage",method=RequestMethod.POST)
 	public String deletePage(int bno,SearchCriteria cri,RedirectAttributes ratt) throws Exception {
 		logger.info("--------------- remove, bno="+bno);
-		service.delete(bno);
-		System.out.println(cri);
-		System.out.println(cri.getSearchType());
 		
+		
+		//파일도 지워지게
+		Board board = service.read(bno, false);
+		
+		if(board.getFiles()!=null) {
+			try {
+				for(String f:board.getFiles()) {
+					UploadFileUtils.deleteFile(uploadPath, f);
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		service.delete(bno);
 		ratt.addAttribute("page",cri.getPage());
 		ratt.addAttribute("searchType",cri.getSearchType());
 		ratt.addAttribute("keyword",cri.getKeyword());
@@ -131,10 +143,45 @@ public class SearchhBoardController {
 	}
 	
 	@RequestMapping(value="modPage",method=RequestMethod.POST)
-	public String modPagePOST(Board board,SearchCriteria cri,RedirectAttributes ratt) throws Exception {
+	public String modPagePOST(Board board,SearchCriteria cri,List<MultipartFile> imgFiles,RedirectAttributes ratt) throws Exception {
 		logger.info("--------------- mod, bno="+board);
 		
 		service.update(board);
+		if(board.getFiles()!=null) {
+			try {
+				for(String f:board.getFiles()) {
+					File sfile = new File(uploadPath+"/"+f);
+					
+		//			File file = new File(outUploadPath+"/"+filename.substring(0,filename.indexOf("s_"))+filename.substring(filename.indexOf("s_")+2));
+					File file = new File(uploadPath+"/"+f.substring(0,12)+f.substring(14));
+					
+					if(file.exists()) {
+						logger.info("file exist"+sfile.getPath());
+						logger.info("file exist"+file.getPath());
+						sfile.delete();
+						file.delete();
+					}else {
+						logger.info("file not exist");
+					}
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		//파일 업로드
+		Board board2 = board;
+		ArrayList<String> list = new ArrayList<>();
+		for(MultipartFile file : imgFiles) {
+			System.out.println(file.getName());
+			logger.info("file name : "+file.getOriginalFilename());
+			logger.info("file size : "+file.getSize());
+			if(file.getSize()>0) {
+				String savedName = UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
+				list.add(savedName);
+			}
+		}
+		board2.setFiles(list);
+		service.insertAttach(board2);
 		
 		ratt.addAttribute("page",cri.getPage());
 		ratt.addAttribute("searchType",cri.getSearchType());

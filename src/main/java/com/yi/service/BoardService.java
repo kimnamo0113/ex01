@@ -19,4 +19,6 @@ public interface BoardService {
 	
 	public List<Board> listSearch(SearchCriteria cri) throws Exception;
 	public int listSearchCount(SearchCriteria cri) throws Exception;
+	
+	public void insertAttach(Board board) throws Exception;
 }

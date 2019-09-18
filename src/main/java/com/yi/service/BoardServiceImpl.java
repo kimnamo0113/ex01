@@ -25,7 +25,7 @@ public class BoardServiceImpl implements BoardService{
 			dao.addAttach(fullName);
 		}
 	}
-
+	
 	@Override
 	public List<Board> listAll() throws Exception {
 		return dao.listAll();
@@ -45,16 +45,23 @@ public class BoardServiceImpl implements BoardService{
 		
 		return board;
 	}
-
+	@Transactional
 	@Override
 	public void delete(int bno) throws Exception {
+		dao.deleteAttach(bno);
 		dao.delete(bno);
 	}
-
+	@Transactional
 	@Override
 	public void update(Board board) throws Exception {
+		if(board.getFiles()!=null) {
+			for(String file : board.getFiles()) {
+				dao.deleteAttachByFullName(board.getBno(),file);
+			}
+		}
 		dao.update(board);
 	}
+	
 
 	@Override
 	public List<Board> listCreteria(Creiteria cri) throws Exception {
@@ -75,6 +82,13 @@ public class BoardServiceImpl implements BoardService{
 	public int listSearchCount(SearchCriteria cri) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.listSearchCount(cri);
+	}
+
+	@Override
+	public void insertAttach(Board board) throws Exception {
+		for(String fullName : board.getFiles()) {
+			dao.insertAttach(fullName,board.getBno());
+		}
 	}
 
 	

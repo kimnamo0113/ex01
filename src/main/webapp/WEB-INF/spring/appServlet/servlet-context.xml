@@ -21,6 +21,8 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<context:component-scan base-package="com.yi.controller" />
+	
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="maxUploadSize" value="10485760"></beans:property>
 	</beans:bean>
@@ -29,8 +31,23 @@
 		<beans:constructor-arg value="c:/zzz/upload"></beans:constructor-arg>
 	</beans:bean>
 	
-	<context:component-scan base-package="com.yi.controller" />
 	
 	
+	<beans:bean id="loginInterceptor" class="com.yi.interceptor.LoginInterceptor"></beans:bean>
 	
+	<beans:bean id="authInterceptor" class="com.yi.interceptor.AuthInterceptor"></beans:bean>
+	
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/auth/loginPost"/>
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/sboard/register"/>
+			<mapping path="/sboard/readPage"/>
+			<mapping path="/sboard/modPage"/>
+			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+	</interceptors>
 </beans:beans>

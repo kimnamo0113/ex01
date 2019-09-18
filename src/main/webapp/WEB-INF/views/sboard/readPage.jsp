@@ -43,11 +43,13 @@
 						</div>
 					</div>
 					<!-- box-footer -->
-					<div class="box-footer">
-						<button type="button" class="btn btn-warning">MODIFY</button>
-						<button type="button" class="btn btn-danger">REMOVE</button>
-						<button type="button" class="btn btn-info">GO LIST</button>
-					</div>
+					<c:if test="${Auth.userid==board.writer }">
+						<div class="box-footer">
+							<button type="button" class="btn btn-warning">MODIFY</button>
+							<button type="button" class="btn btn-danger">REMOVE</button>
+							<button type="button" class="btn btn-info">GO LIST</button>
+						</div>
+					</c:if>
 				</form>
 				<!-- box-footer -->
 				<div class="box-footer"></div>
@@ -80,8 +82,9 @@
 		</div>
 		<div class="box-body">
 			<label>Writer</label> 
-			<input type="text" placeholder="user id" id="newReplyWriter" class="form-control">
+			<input type="text" placeholder="user id" id="newReplyWriter" class="form-control" value="${Auth.userid }" readonly="readonly">
 			<label>Reply Text</label> 
+			
 			<input type="text" placeholder="text" id="newReplyText" class="form-control">
 		</div>
 		<div class="box-footer">
@@ -133,17 +136,28 @@
 				<strong>{{rno}}</strong> - {{replyer}}
 			</h3>
 			<div class="timeline-body">{{replytext}}</div>
+			{{#if replyer}}
 			<div class="timeline-footer">
 				<a class="btn btn-primary btn-xs btnReplyModify" data-rno="{{rno}}" data-toggle="modal" data-target="#modifyModal">Mdify</a>
 				<a class="btn btn-danger btn-xs btnReplyDelete" data-rno="{{rno}}">Delete</a>
 			</div>
+			{{/if}}
 		</div>
 		</li>
 		{{/each}}
 	</script>
-
 	
 	<script type="text/javascript">
+		//if문을 사용시, options는 항상 있는 매개변수임
+		//if 헬퍼 사이의 구문 통채로 options 매개변수에 넘어옴
+		Handlebars.registerHelper("if",function(replyer,options){
+			if(replyer=='${Auth.userid}'){
+				return options.fn(this); //헬퍼사이에 구문 통째로 return
+			}else{
+				return ""; //빈문자
+			}
+		})
+		
 		$("#btnReplyList").click(function() {
 			getListAll(1)
 		})

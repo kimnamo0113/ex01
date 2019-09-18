@@ -79,4 +79,17 @@ public class UploadFileUtils {
 		//c:/zzz/upload를 뺀 나머지 경로를 리턴함
 		return thumbnailName.substring(uploadPath.length());
 	}
+	public static void deleteFile(String uploadPath,String f) {
+		File sfile = new File(uploadPath+"/"+f);
+		
+		//			File file = new File(outUploadPath+"/"+filename.substring(0,filename.indexOf("s_"))+filename.substring(filename.indexOf("s_")+2));
+					File file = new File(uploadPath+"/"+f.substring(0,12)+f.substring(14));
+					
+					if(file.exists()) {
+						sfile.delete();
+						file.delete();
+					}else {
+						
+					}
+	}
 }

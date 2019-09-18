@@ -95,8 +95,21 @@
 	<insert id="addAttach">
 		insert into tbl_attach(fullName, bno) value(#{fullName}, LAST_INSERT_ID())
 	</insert>
+	<insert id="insertAttach">
+		insert into tbl_attach(fullName, bno) value(#{fullName}, #{bno})
+	</insert>
 	
 	<select id="getAttach" resultType="String">
 		select fullName from tbl_attach where bno = #{bno}
 	</select>
+	
+	<delete id="deleteAttach">
+		delete from tbl_attach where bno= #{bno}
+	</delete>
+	
+	<delete id="deleteAttachByFullName">
+		delete from tbl_attach where bno = #{bno} and fullName = #{fullName}
+	</delete>
+	
+	
 </mapper>
